@@ -1,7 +1,7 @@
 {
   "name": "Bubble Popper",
   "short_name": "Bubble Popper",
-  "description": "Pop bubbles, survive waves, collect skins — the ultimate bubble popping game!",
+  "description": "Pop bubbles, survive waves, collect skins!",
   "start_url": "./",
   "scope": "./",
   "display": "fullscreen",
