@@ -4744,8 +4744,9 @@ window._fbServerTimestamp = serverTimestamp;
 window._fbSignInWithPopup = signInWithPopup;
 window._fbGetRedirectResult = getRedirectResult;
 window._fbSignOut = signOut;
+window._fbSignInWithRedirect = signInWithRedirect;
 window._fbOnAuthStateChanged = onAuthStateChanged;
-
+  
 // Handle redirect result (after Google login redirects back)
 getRedirectResult(auth).then(result => {
   if(result && result.user){
