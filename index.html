@@ -4699,8 +4699,14 @@ applyLanguage();
 
 // Show splash → then login screen
 showSplash(()=>{
-  showLoginScreen();
-});
+    if(window._fbCurrentUser){
+          onUserLoggedIn(window._fbCurrentUser);
+  } else if(localStorage.getItem('bp_guest')){
+      proceedAfterLogin();
+  } else {
+      showLoginScreen();
+  }
+  });
 </script>
 <!-- Service Worker -->
 <script>
