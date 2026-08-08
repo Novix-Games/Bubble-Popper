@@ -194,11 +194,12 @@
   </div>
   <!-- If already signed in, show user info -->
   <div id="loginUserInfo" style="display:none;flex-direction:column;align-items:center;gap:8px">
+    <div style="font-size:0.7rem;color:var(--safe);letter-spacing:1px;text-transform:uppercase">✅ Connected with Google</div>
     <img id="loginUserPhoto" src="" style="width:52px;height:52px;border-radius:50%;border:2px solid var(--safe)">
     <div id="loginUserName" style="font-family:'Orbitron',monospace;font-size:0.85rem;color:var(--text)"></div>
     <div id="loginUserEmail" style="font-size:0.65rem;color:var(--muted)"></div>
     <button onclick="logoutUser()" style="background:none;border:1px solid rgba(255,50,50,0.4);color:rgba(255,100,100,0.8);padding:6px 16px;border-radius:8px;font-size:0.7rem;cursor:pointer;margin-top:4px" id="loginLogoutBtn">Sign out</button>
-  </div>
+    </div>
 </div>
 
 <!-- LANGUAGE PICKER — shown on first launch -->
@@ -3727,6 +3728,7 @@ function updateLoginUI(user){
   const btns = document.getElementById('loginGoogleBtn');
   const guest = document.getElementById('loginGuestBtn');
   const note = document.getElementById('loginNote');
+      const syncBadge = document.getElementById('syncBadge');
   if(user){
     if(info) info.style.display='flex';
     if(btns) btns.style.display='none';
@@ -3738,11 +3740,13 @@ function updateLoginUI(user){
     if(photo && user.photoURL) photo.src = user.photoURL;
     if(name) name.textContent = user.displayName || '';
     if(email) email.textContent = user.email || '';
+      if(syncBadge && user.photoURL) syncBadge.innerHTML = '<img src="'+user.photoURL+'" style="width:20px;height:20px;border-radius:50%;display:block;object-fit:cover">';
   } else {
     if(info) info.style.display='none';
     if(btns){ btns.style.display='flex'; btns.disabled=false; btns.style.opacity='1'; }
     if(guest) guest.style.display='block';
     if(note) note.style.display='block';
+      if(syncBadge) syncBadge.textContent = '👤';
   }
 }
 
