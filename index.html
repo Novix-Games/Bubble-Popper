@@ -3669,19 +3669,7 @@ function buildLevelGrid(){
 let currentUser = null;
 let syncTimeout = null;
 
-function loginWithGoogle(){
-  const btn = document.getElementById('loginGoogleBtn');
-  if(btn){ btn.disabled=true; btn.style.opacity='0.7'; }
-  if(!window._fbSignInWithRedirect){
-    setTimeout(loginWithGoogle,300); return;
-  }
-  // Redirect to Google sign-in page
-  window._fbSignInWithRedirect(window._fbAuth, window._fbProvider)
-    .catch(err=>{
-      console.error(err);
-      if(btn){ btn.disabled=false; btn.style.opacity='1'; }
-    });
-}
+function loginWithGoogle(){ const btn=document.getElementById('loginGoogleBtn'); if(btn){ btn.disabled=true; btn.style.opacity='0.7'; } if(!window._fbSignInWithPopup){ setTimeout(loginWithGoogle,300); return; } window._fbSignInWithPopup(window._fbAuth, window._fbProvider).then(function(result){ if(result && result.user){ window._fbCurrentUser=result.user; if(typeof window._onRedirectResult==='function'){ window._onRedirectResult(result.user); } } if(btn){ btn.disabled=false; btn.style.opacity='1'; } }).catch(function(err){ console.error(err); if(btn){ btn.disabled=false; btn.style.opacity='1'; } }); }
 
 // Called after redirect comes back with user
 window._onRedirectResult = function(user){
@@ -3724,32 +3712,7 @@ function onUserLoggedIn(user){
   updateLoginUI(user);
 }
 
-function updateLoginUI(user){
-  const info = document.getElementById('loginUserInfo');
-  const btns = document.getElementById('loginGoogleBtn');
-  const guest = document.getElementById('loginGuestBtn');
-  const note = document.getElementById('loginNote');
-      const syncBadge = document.getElementById('syncBadge');
-  if(user){
-    if(info) info.style.display='flex';
-    if(btns) btns.style.display='none';
-    if(guest) guest.style.display='none';
-    if(note) note.style.display='none';
-    const photo = document.getElementById('loginUserPhoto');
-    const name = document.getElementById('loginUserName');
-    const email = document.getElementById('loginUserEmail');
-    if(photo && user.photoURL) photo.src = user.photoURL;
-    if(name) name.textContent = user.displayName || '';
-    if(email) email.textContent = user.email || '';
-      if(syncBadge && user.photoURL) syncBadge.innerHTML = '<img src="'+user.photoURL+'" style="width:20px;height:20px;border-radius:50%;display:block;object-fit:cover">';
-  } else {
-    if(info) info.style.display='none';
-    if(btns){ btns.style.display='flex'; btns.disabled=false; btns.style.opacity='1'; }
-    if(guest) guest.style.display='block';
-    if(note) note.style.display='block';
-      if(syncBadge) syncBadge.textContent = '👤';
-  }
-}
+function updateLoginUI(user){ const info=document.getElementById('loginUserInfo'); const btns=document.getElementById('loginGoogleBtn'); const guest=document.getElementById('loginGuestBtn'); const note=document.getElementById('loginNote'); const syncBadge=document.getElementById('syncBadge'); if(user){ if(info) info.style.display='flex'; if(btns) btns.style.display='none'; if(guest) guest.style.display='none'; if(note) note.style.display='none'; const photo=document.getElementById('loginUserPhoto'); const name=document.getElementById('loginUserName'); const email=document.getElementById('loginUserEmail'); if(photo && user.photoURL){ photo.referrerPolicy='no-referrer'; photo.onerror=function(){ this.onerror=null; this.style.display='none'; }; photo.style.display='block'; photo.src=user.photoURL; } if(name) name.textContent=user.displayName || ''; if(email) email.textContent=user.email || ''; if(syncBadge){ if(user.photoURL){ syncBadge.textContent=''; const im=document.createElement('img'); im.src=user.photoURL; im.referrerPolicy='no-referrer'; im.style.width='20px'; im.style.height='20px'; im.style.borderRadius='50%'; im.style.display='block'; im.style.objectFit='cover'; im.onerror=function(){ syncBadge.textContent='👤'; }; syncBadge.appendChild(im); } else { syncBadge.textContent='👤'; } } } else { if(info) info.style.display='none'; if(btns){ btns.style.display='flex'; btns.disabled=false; btns.style.opacity='1'; } if(guest) guest.style.display='block'; if(note) note.style.display='block'; if(syncBadge) syncBadge.textContent='👤'; } }
 
 function proceedAfterLogin(){
   if(!localStorage.getItem('bp_lang_chosen')){
